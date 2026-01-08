@@ -1,0 +1,45 @@
+{
+  "name": "snow-effect",
+  "version": "1.0.0",
+  "description": "Windows下雪特效应用",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win --x64"
+  },
+  "build": {
+    "appId": "com.snow.effect",
+    "productName": "下雪特效",
+    "win": {
+      "target": "nsis",
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "下雪特效",
+      "runAfterFinish": true
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "index.html",
+      "main.js",
+      "preload.js",
+      "settings.html",
+      "snow.png"
+    ]
+  },
+  "keywords": ["electron", "snow", "特效"],
+  "author": "Developer",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^39.2.7",
+    "electron-builder": "^26.4.0"
+  }
+}

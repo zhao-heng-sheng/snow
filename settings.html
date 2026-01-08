@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下雪特效设置</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        
+        .setting-group {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .setting-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .setting-group input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.2);
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .setting-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        
+        .value-display {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #4fc3f7;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        .buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .save-btn {
+            background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            color: #fff;
+        }
+        
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(79, 195, 247, 0.4);
+        }
+        
+        .reset-btn {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+        }
+        
+        .reset-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>❄️ 下雪特效设置 ❄️</h1>
+    
+    <div class="setting-group">
+        <label>雪花大小</label>
+        <input type="range" id="size" min="2" max="20" value="3">
+        <div class="value-display" id="sizeValue">3px</div>
+    </div>
+    
+    <div class="setting-group">
+        <label>雪花数量</label>
+        <input type="range" id="quantity" min="50" max="500" value="100">
+        <div class="value-display" id="quantityValue">100</div>
+
+    </div>
+    
+    <div class="setting-group">
+        <label>下落速度</label>
+        <input type="range" id="speed" min="1" max="5" value="2">
+        <div class="value-display" id="speedValue">2</div>
+
+    </div>
+    
+    <div class="setting-group">
+        <label>积雪高度</label>
+        <input type="range" id="accumulation" min="0" max="3000" value="500">
+        <div class="value-display" id="accumulationValue">500px</div>
+
+    </div>
+    
+    <div class="setting-group">
+        <label>积雪累计速度</label>
+        <input type="range" id="accumulationSpeed" min="0.05" max="1" step="0.05" value="0.2">
+        <div class="value-display" id="accumulationSpeedValue">0.2</div>
+
+    </div>
+    
+    <div class="buttons">
+        <button class="reset-btn" onclick="resetSettings()">重置</button>
+        <button class="save-btn" onclick="saveSettings()">应用</button>
+    </div>
+    
+    <script>
+        let currentSettings = { size: 3, quantity: 100, speed: 2, accumulation: 500, accumulationSpeed: 0.2 };
+        
+        const sizeSlider = document.getElementById('size');
+        const quantitySlider = document.getElementById('quantity');
+        const speedSlider = document.getElementById('speed');
+        const accumulationSlider = document.getElementById('accumulation');
+        const accumulationSpeedSlider = document.getElementById('accumulationSpeed');
+        
+        function updateDisplay() {
+            const size = parseInt(sizeSlider.value, 10);
+            const quantity = parseInt(quantitySlider.value, 10);
+            const speed = parseInt(speedSlider.value, 10);
+            const accumulation = parseInt(accumulationSlider.value, 10);
+            const accumulationSpeed = parseFloat(accumulationSpeedSlider.value);
+
+            currentSettings = { size, quantity, speed, accumulation, accumulationSpeed };
+
+            document.getElementById('sizeValue').textContent = `${size}px`;
+            document.getElementById('quantityValue').textContent = quantity;
+            document.getElementById('speedValue').textContent = speed;
+            document.getElementById('accumulationValue').textContent = `${accumulation}px`;
+            document.getElementById('accumulationSpeedValue').textContent = accumulationSpeed;
+        }
+        
+        sizeSlider.addEventListener('input', updateDisplay);
+        quantitySlider.addEventListener('input', updateDisplay);
+        speedSlider.addEventListener('input', updateDisplay);
+        accumulationSlider.addEventListener('input', updateDisplay);
+        accumulationSpeedSlider.addEventListener('input', updateDisplay);
+        
+        function saveSettings() {
+            window.electron.saveSettings(currentSettings);
+        }
+        
+        function resetSettings() {
+            sizeSlider.value = 3;
+            quantitySlider.value = 100;
+            speedSlider.value = 2;
+            accumulationSlider.value = 500;
+            accumulationSpeedSlider.value = 0.2;
+            updateDisplay();
+            saveSettings();
+        }
+        
+        updateDisplay();
+    </script>
+</body>
+</html>
