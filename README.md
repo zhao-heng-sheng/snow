@@ -22,7 +22,7 @@
 
 ### 方法一：直接安装（推荐）
 
-1. 下载最新的安装包 [雪花特效.exe](https://www.123865.com/s/tSC9-wIFKH?pwd=CPZd#)
+1. 下载最新的安装包 [雪花特效.exe](https://www.123865.com/s/tSC9-wIFKH?pwd=CPZd)
 2. 双击运行安装程序
 3. 按照安装向导完成安装
 
